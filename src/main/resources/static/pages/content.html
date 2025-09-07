@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户管理系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            background: #fafafa;
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #4facfe;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 8px 20px rgba(81, 207, 102, 0.3);
+        }
+
+        .search-container {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+
+        .search-container .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .user-list {
+            margin-top: 30px;
+        }
+
+        .user-item {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .user-item:hover {
+            border-color: #4facfe;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .user-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .user-field {
+            font-weight: bold;
+            color: #666;
+        }
+
+        .user-value {
+            color: #333;
+            word-break: break-all;
+        }
+
+        .user-actions {
+            text-align: right;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .current-user {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .current-user h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .current-user-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .current-user-field {
+            font-weight: bold;
+            color: #666;
+        }
+
+        .current-user-value {
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .search-container {
+                flex-direction: column;
+            }
+
+            .search-container .form-group {
+                min-width: 100%;
+            }
+
+            .user-info {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>👥 用户管理系统</h1>
+        <p>用户信息管理 | 搜索 | 删除 | 权限控制</p>
+    </div>
+
+    <div class="content">
+        <!-- 当前用户信息 -->
+        <div class="section">
+            <h2>🔐 当前登录用户</h2>
+            <div id="currentUserDisplay">
+                <div class="message info">请先登录后查看当前用户信息</div>
+            </div>
+            <button class="btn btn-success" onclick="getCurrentUser()">获取当前用户</button>
+            <button class="btn" onclick="logout()">退出登录</button>
+        </div>
+
+        <!-- 搜索用户 -->
+        <div class="section">
+            <h2>🔍 搜索用户</h2>
+            <div class="search-container">
+                <div class="form-group">
+                    <label for="searchUsername">用户名:</label>
+                    <input type="text" id="searchUsername" placeholder="输入要搜索的用户名">
+                </div>
+                <div class="form-group">
+                    <button class="btn" onclick="searchUsers()">搜索用户</button>
+                    <button class="btn" onclick="clearSearch()">清空</button>
+                </div>
+            </div>
+
+            <div id="searchResults" class="user-list"></div>
+        </div>
+
+        <!-- 删除用户 -->
+        <div class="section">
+            <h2>🗑️ 删除用户</h2>
+            <div class="form-group">
+                <label for="deleteUserId">用户ID:</label>
+                <input type="number" id="deleteUserId" placeholder="输入要删除的用户ID" min="1">
+            </div>
+            <button class="btn btn-danger" onclick="deleteUser()">删除用户</button>
+            <button class="btn" onclick="clearDeleteForm()">清空</button>
+
+            <div id="deleteResult"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 基础配置
+    const API_BASE_URL = 'http://localhost:8080/api'; // 根据你的实际后端地址修改
+
+    // 显示消息
+    function showMessage(message, type = 'info') {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${type}`;
+        messageDiv.textContent = message;
+
+        // 插入到当前操作的容器顶部
+        const activeSection = document.querySelector('.section:has(button[onclick*="getCurrentUser"])') ||
+            document.querySelector('.section:first-child');
+        activeSection.insertBefore(messageDiv, activeSection.firstChild.nextSibling);
+
+        // 3秒后自动移除消息
+        setTimeout(() => {
+            if (messageDiv.parentNode) {
+                messageDiv.parentNode.removeChild(messageDiv);
+            }
+        }, 3000);
+    }
+
+    // 显示错误消息
+    function showError(message) {
+        showMessage(message, 'error');
+    }
+
+    // 显示成功消息
+    function showSuccess(message) {
+        showMessage(message, 'success');
+    }
+
+    // API 请求封装
+    async function apiRequest(url, options = {}) {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...options.headers
+                },
+                credentials: 'include',
+                ...options
+            };
+
+            // 如果body是数字或字符串，不要JSON.stringify
+            if (options.body && typeof options.body !== 'object') {
+                // 不修改headers，让服务器按文本处理，或者根据后端需求调整
+                // 这里假设后端可以直接接收数字ID
+            } else if (options.body) {
+                config.body = JSON.stringify(options.body);
+            }
+
+            const response = await fetch(url, config);
+
+            const data = await response.json();
+
+            if (data.code && data.code !== 0) {
+                throw new Error(data.message || '请求失败');
+            }
+
+            return data;
+        } catch (error) {
+            console.error('API请求错误:', error);
+            throw error;
+        }
+    }
+    // 获取当前用户
+    async function getCurrentUser() {
+        try {
+            const response = await apiRequest(`${API_BASE_URL}/user/current`);
+
+            if (response.code === 0 && response.data) {
+                const user = response.data;
+                const currentUserHtml = `
+                        <div class="current-user">
+                            <h3>✅ 当前登录用户信息</h3>
+                            <div class="current-user-info">
+                                <div>
+                                    <span class="current-user-field">用户ID:</span>
+                                    <span class="current-user-value">${user.id}</span>
+                                </div>
+                                <div>
+                                    <span class="current-user-field">账号:</span>
+                                    <span class="current-user-value">${user.userAccount || '未设置'}</span>
+                                </div>
+                                <div>
+                                    <span class="current-user-field">用户名:</span>
+                                    <span class="current-user-value">${user.username || '未设置'}</span>
+                                </div>
+                                <div>
+                                    <span class="current-user-field">用户角色:</span>
+                                    <span class="current-user-value">${user.userRole === 1 ? '管理员' : '普通用户'}</span>
+                                </div>
+                                <div>
+                                    <span class="current-user-field">星球编号:</span>
+                                    <span class="current-user-value">${user.planetCode || '未设置'}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                document.getElementById('currentUserDisplay').innerHTML = currentUserHtml;
+                showSuccess('获取当前用户信息成功！');
+            } else {
+                throw new Error(response.message || '获取用户信息失败');
+            }
+        } catch (error) {
+            const errorMsg = error.message || '获取当前用户信息失败，请确保已登录';
+            document.getElementById('currentUserDisplay').innerHTML = `
+                    <div class="message error">${errorMsg}</div>
+                `;
+            showError(errorMsg);
+        }
+    }
+
+    // 搜索用户
+    async function searchUsers() {
+        const username = document.getElementById('searchUsername').value.trim();
+
+        if (!username) {
+            showError('请输入要搜索的用户名');
+            return;
+        }
+
+        try {
+            const response = await apiRequest(`${API_BASE_URL}/user/search?username=${encodeURIComponent(username)}`);
+            if (response.code === 0 && response.data) {
+                const users = response.data;
+                displayUsers(users, 'searchResults');
+                showSuccess(`找到 ${users.length} 个用户`);
+            } else {
+                throw new Error(response.message || '搜索用户失败');
+            }
+        } catch (error) {
+            const errorMsg = error.message || '搜索用户失败';
+            document.getElementById('searchResults').innerHTML = `
+                    <div class="message error">${errorMsg}</div>
+                `;
+            showError(errorMsg);
+        }
+    }
+
+    // 显示用户列表
+    function displayUsers(users, containerId) {
+        const container = document.getElementById(containerId);
+
+        if (!users || users.length === 0) {
+            container.innerHTML = '<div class="message info">未找到匹配的用户</div>';
+            return;
+        }
+
+        const usersHtml = users.map(user => `
+                <div class="user-item">
+                    <div class="user-info">
+                        <div>
+                            <span class="user-field">用户ID:</span>
+                            <span class="user-value">${user.id}</span>
+                        </div>
+                        <div>
+                            <span class="user-field">账号:</span>
+                            <span class="user-value">${user.userAccount || '未设置'}</span>
+                        </div>
+                        <div>
+                            <span class="user-field">用户名:</span>
+                            <span class="user-value">${user.username || '未设置'}</span>
+                        </div>
+                        <div>
+                            <span class="user-field">用户角色:</span>
+                            <span class="user-value">${user.userRole === 1 ? '管理员' : '普通用户'}</span>
+                        </div>
+                        <div>
+                            <span class="user-field">星球编号:</span>
+                            <span class="user-value">${user.planetCode || '未设置'}</span>
+                        </div>
+                    </div>
+                    <div class="user-actions">
+                        <small style="color: #666;">点击删除按钮可删除此用户（需要管理员权限）</small>
+                    </div>
+                </div>
+            `).join('');
+
+        container.innerHTML = `<div class="user-list">${usersHtml}</div>`;
+    }
+
+    // 删除用户
+    async function deleteUser() {
+        const userId = document.getElementById('deleteUserId').value.trim();
+
+        if (!userId) {
+            showError('请输入要删除的用户ID');
+            return;
+        }
+
+        if (!confirm(`确定要删除用户ID为 ${userId} 的用户吗？此操作不可恢复！`)) {
+            return;
+        }
+
+        try {
+            const response = await apiRequest(`${API_BASE_URL}/user/delete`, {
+                method: 'POST',
+                body: userId
+            });
+
+            if (response.code === 0) {
+                const result = response.data;
+                const resultHtml = `
+                        <div class="message ${result ? 'success' : 'error'}">
+                            ${result ? '✅ 用户删除成功！' : '❌ 用户删除失败！'}
+                        </div>
+                    `;
+                document.getElementById('deleteResult').innerHTML = resultHtml;
+                showSuccess(result ? '用户删除成功！' : '用户删除失败！');
+
+                // 清空表单
+                document.getElementById('deleteUserId').value = '';
+            } else {
+                throw new Error(response.message || '删除用户失败');
+            }
+        } catch (error) {
+            const errorMsg = error.message || '删除用户失败';
+            const resultHtml = `
+                    <div class="message error">
+                        ❌ ${errorMsg}
+                    </div>
+                `;
+            document.getElementById('deleteResult').innerHTML = resultHtml;
+            showError(errorMsg);
+        }
+    }
+
+    // 退出登录
+    async function logout() {
+        if (!confirm('确定要退出登录吗？')) {
+            return;
+        }
+
+        try {
+            const response = await apiRequest(`${API_BASE_URL}/user/logout`, {
+                method: 'POST'
+            });
+
+            if (response.code === 0) {
+                showSuccess('退出登录成功！');
+                // 清空当前用户显示
+                document.getElementById('currentUserDisplay').innerHTML = `
+                        <div class="message info">已退出登录</div>
+                    `;
+                document.getElementById('searchResults').innerHTML = '';
+                document.getElementById('deleteResult').innerHTML = '';
+                window.location.href = 'http://localhost:8080/api/pages/login-register.html';
+            } else {
+                throw new Error(response.message || '退出登录失败');
+            }
+        } catch (error) {
+            const errorMsg = error.message || '退出登录失败';
+            showError(errorMsg);
+        }
+    }
+
+    // 清空搜索表单
+    function clearSearch() {
+        document.getElementById('searchUsername').value = '';
+        document.getElementById('searchResults').innerHTML = '';
+    }
+
+    // 清空删除表单
+    function clearDeleteForm() {
+        document.getElementById('deleteUserId').value = '';
+        document.getElementById('deleteResult').innerHTML = '';
+    }
+
+    // 页面加载时自动获取当前用户
+    window.addEventListener('load', function() {
+        getCurrentUser();
+    });
+
+    // 回车键快捷操作
+    document.getElementById('searchUsername').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            searchUsers();
+        }
+    });
+
+    document.getElementById('deleteUserId').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            deleteUser();
+        }
+    });
+</script>
+</body>
+</html>

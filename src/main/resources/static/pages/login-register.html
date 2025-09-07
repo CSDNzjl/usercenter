@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>用户登录 / 注册</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .form-container {
+            padding: 40px 30px;
+        }
+
+        .tab-container {
+            display: flex;
+            margin-bottom: 30px;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .form {
+            display: none;
+        }
+
+        .form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .switch-text {
+            text-align: center;
+            margin-top: 16px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .switch-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .switch-link:hover {
+            text-decoration: underline;
+        }
+
+        /* 响应式 */
+        @media (max-width: 480px) {
+            .container {
+                margin: 20px;
+                max-width: none;
+            }
+
+            .form-container {
+                padding: 30px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-container">
+        <!-- Tab 切换 -->
+        <div class="tab-container">
+            <button class="tab active" onclick="switchTab('login')">登录</button>
+            <button class="tab" onclick="switchTab('register')">注册</button>
+        </div>
+
+        <!-- 登录表单 -->
+        <form id="loginForm" class="form active">
+            <div class="form-group">
+                <label for="loginAccount">账号</label>
+                <input type="text" id="loginAccount" name="userAccount" placeholder="请输入账号" required />
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">密码</label>
+                <input type="password" id="loginPassword" name="userPassword" placeholder="请输入密码" required />
+            </div>
+            <button type="submit" class="submit-btn">登录</button>
+        </form>
+
+        <!-- 注册表单 -->
+        <form id="registerForm" class="form">
+            <div class="form-group">
+                <label for="regAccount">账号</label>
+                <input type="text" id="regAccount" name="userAccount" placeholder="请输入账号" required />
+            </div>
+            <div class="form-group">
+                <label for="regPassword">密码</label>
+                <input type="password" id="regPassword" name="userPassword" placeholder="请输入密码" required />
+            </div>
+            <div class="form-group">
+                <label for="checkPassword">确认密码</label>
+                <input type="password" id="checkPassword" name="checkPassword" placeholder="请再次输入密码" required />
+            </div>
+            <div class="form-group">
+                <label for="planetCode">星球编号</label>
+                <input type="text" id="planetCode" name="planetCode" placeholder="请输入星球编号" required />
+            </div>
+            <button type="submit" class="submit-btn">注册</button>
+        </form>
+
+        <!-- 切换提示 -->
+        <div class="switch-text">
+            <span id="switchSpan">还没有账号？</span>
+            <a href="javascript:void(0)" class="switch-link" onclick="switchTab('register')">立即注册</a>
+            <span style="margin: 0 8px;">|</span>
+            <a href="javascript:void(0)" class="switch-link" onclick="switchTab('login')">已有账号？去登录</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 切换登录 / 注册表单
+    function switchTab(type) {
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const tabs = document.querySelectorAll('.tab');
+        const switchSpan = document.getElementById('switchSpan');
+
+        // 更新 tab 样式
+        tabs.forEach(tab => tab.classList.remove('active'));
+        event.target.classList.add('active');
+
+        // 显示对应表单
+        if (type === 'login') {
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
+            switchSpan.innerHTML = '还没有账号？';
+        } else {
+            loginForm.classList.remove('active');
+            registerForm.classList.add('active');
+            switchSpan.innerHTML = '已有账号？';
+        }
+    }
+
+    // 提交登录表单
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const account = document.getElementById('loginAccount').value;
+        const password = document.getElementById('loginPassword').value;
+
+        try {
+            const res = await fetch('http://localhost:8080/api/user/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userAccount: account, userPassword: password })
+            });
+
+            const data = await res.json();
+            if (data.code === 0) {
+                // 跳转到内容页面
+                window.location.href = 'http://localhost:8080/api/pages/content.html';
+                alert('登录成功！'); // 可选：保留提示 or 删除
+            } else {
+                alert('登录失败：' + (data.message || '未知错误'));
+            }
+        } catch (err) {
+            alert('请求出错：' + err.message);
+        }
+    });
+
+    // 提交注册表单
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const account = document.getElementById('regAccount').value;
+        const password = document.getElementById('regPassword').value;
+        const checkPassword = document.getElementById('checkPassword').value;
+        const planetCode = document.getElementById('planetCode').value;
+
+        if (password !== checkPassword) {
+            alert('两次密码不一致！');
+            return;
+        }
+
+        try {
+            const res = await fetch('http://localhost:8080/api/user/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userAccount: account,
+                    userPassword: password,
+                    checkPassword: checkPassword,
+                    planetCode: planetCode
+                })
+            });
+
+            const data = await res.json();
+            if (data.code === 0) {
+                alert('注册成功！请登录');
+            } else {
+                alert('注册失败：' + (data.message || '未知错误'));
+            }
+        } catch (err) {
+            alert('请求出错：' + err.message);
+        }
+    });
+</script>
+
+</body>
+</html>
