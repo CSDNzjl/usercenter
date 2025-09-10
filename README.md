@@ -70,8 +70,18 @@
   - pom.xml
   - README.md
   - user-center-backend-0.0.1-SNAPSHOT.jar//打包程序，构建好数据库可直接使用终端运行
+ 
+## 远程访问
+1.访问前端页面登录（AI生成，存在瑕疵，但基本实现后端接口）http://110.42.60.104:8080/api/pages/login-register.html
 
-## 快速开始
+2.登录管理员账号：testuser123  密码：password123,跳转http://110.42.60.104:8080/api/pages/content.html
+
+3.通过前端页面测试接口
+
+4.也可以通过postman发送请求测试接口，见postman文件夹中UserCenter Copy （远程）.postman_collection，可直接测试后端接口
+
+
+## 快速开始(本地)
 
 1.构建数据库
 
