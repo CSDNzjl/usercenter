@@ -1,0 +1,186 @@
+{
+	"info": {
+		"_postman_id": "26e22f77-d80a-42b3-a652-4c5d8a5b195a",
+		"name": "UserCenter Copy （远程）",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43456461",
+		"_collection_link": "https://luffy-666-3026062.postman.co/workspace/SpringMVC~07ae9146-50e8-471f-84f6-556a6b7a09f6/collection/43456461-26e22f77-d80a-42b3-a652-4c5d8a5b195a?action=share&source=collection_link&creator=43456461"
+	},
+	"item": [
+		{
+			"name": "注册用户",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userAccount\": \"testuser066\",\n  \"userPassword\": \"password066\",\n  \"checkPassword\": \"password066\",\n  \"planetCode\": \"t66\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://110.42.60.104:8080/api/user/register",
+					"protocol": "http",
+					"host": [
+						"110",
+						"42",
+						"60",
+						"104"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "用户登录",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userAccount\": \"testuser123\",\n  \"userPassword\": \"password123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://110.42.60.104:8080/api/user/login",
+					"protocol": "http",
+					"host": [
+						"110",
+						"42",
+						"60",
+						"104"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "用户登出",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://110.42.60.104:8080/api/user/logout",
+					"protocol": "http",
+					"host": [
+						"110",
+						"42",
+						"60",
+						"104"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取当前用户",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://110.42.60.104:8080/api/user/current",
+					"protocol": "http",
+					"host": [
+						"110",
+						"42",
+						"60",
+						"104"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"current"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "搜索用户",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userAccount\": \"testuser123\",\n  \"userPassword\": \"password123\"\n}"
+				},
+				"url": {
+					"raw": "http://110.42.60.104:8080/api/user/search",
+					"protocol": "http",
+					"host": [
+						"110",
+						"42",
+						"60",
+						"104"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "删除用户",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "2",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/delete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
